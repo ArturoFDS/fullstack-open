@@ -1,15 +1,13 @@
 /* eslint-disable react/prop-types */
 
-import Part1 from "./parts/Part1"
-import Part2 from "./parts/Part2"
-import Part3 from "./parts/Part3"
+import Part from "./parts/Part"
 
-const Content = ({part1, part2, part3, exercises1, exercises2, exercises3}) => {
+const Content = ({parts}) => {
   return (
     <div>
-        <Part1 part1={part1} exercises1={exercises1} />
-        <Part2 part2={part2} exercises2={exercises2} />
-        <Part3 part3={part3} exercises3={exercises3} />
+      {parts.map(part => (
+        <Part key={part.name} part={part} />
+      ))}
     </div>
   )
 }
