@@ -29,11 +29,27 @@ const App = () => {
     setAnecdotes(updatedAnecdotes);
   };
 
+  const anecdoteWithMoreVotes = anecdotes.reduce(
+    (prevAnecdote, currentAnecdote) => {
+      return currentAnecdote.votes > prevAnecdote.votes
+        ? currentAnecdote
+        : prevAnecdote;
+    }
+  );
   return (
     <div>
+      <h1>
+        Anecdotes
+      </h1>
       {anecdotes[selected].anecdote} With: {anecdotes[selected].votes} votes.
       <button onClick={() => handleVotes(selected)}>Vote</button>
       <button onClick={() => handleOnClick()}>Change anecdote</button>
+      <h1>
+        Anecdote with more views
+      </h1>
+      <div>
+        {anecdoteWithMoreVotes.anecdote} with {anecdoteWithMoreVotes.votes} votes.
+      </div>
     </div>
   );
 };
