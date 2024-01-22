@@ -1,11 +1,15 @@
-const Total = ({ parts }) => {
+const TotalExercises = ({ parts, courseID }) => {
+  console.log(parts);
   return (
     <div>
-      <p>
-        The total ammount of exercises is {parts[0].exercises + parts[1].exercises + parts[2].exercises}
-      </p>
+      <br />
+      <strong>
+        <span>
+          The total number of exercises is: {parts[courseID - 1].exercises}
+        </span>
+      </strong>
     </div>
   );
 };
 
-export default Total;
+export default TotalExercises;

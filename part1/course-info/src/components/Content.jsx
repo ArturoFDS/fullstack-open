@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
 
-import Part from "./parts/Part"
+import Part from "./parts/Part";
 
-const Content = ({parts}) => {
+const Content = ({ courses }) => {
+  console.log(courses);
   return (
     <div>
-      {parts.map(part => (
-        <Part key={part.name} part={part} />
-      ))}
+      <Part key={courses.map((part) => part.id)} courses={courses} />
     </div>
-  )
-}
+  );
+};
 
-export default Content
+export default Content;
