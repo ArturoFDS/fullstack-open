@@ -1,13 +1,16 @@
 import { useState } from "react";
+import Filter from "./components/Filter";
+import PhoneBookForm from "./components/Form";
+import NumbersContainer from "./components/Numbers";
 
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "809-234-5234" },
     { name: "John Doe", number: "123-456-7890" },
     { name: "Jane Smith", number: "987-654-3210" },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
   ]);
   const [newNumber, setNewNumber] = useState("");
   const [newName, setNewName] = useState("");
@@ -50,42 +53,26 @@ const App = () => {
     setNewNumber("");
   };
 
-  const filteredData = searchValue ? persons.filter((person) => person.name.toLowerCase().includes(searchValue.toLowerCase())) : [...persons]
+  const filteredData = searchValue
+    ? persons.filter((person) =>
+        person.name.toLowerCase().includes(searchValue.toLowerCase())
+      )
+    : [...persons];
 
   return (
     <div>
       <section>
         <h2>Search by name</h2>
-        <input
-          type="text"
-          value={searchValue}
-          onChange={(e) => handleSearchInputChange(e)}
-        />
+        <Filter onChangeHandler={handleSearchInputChange} />
       </section>
       <h2>Phonebook</h2>
-      <form>
-        <div>
-          name:
-          <input
-            value={newName}
-            onChange={(e) => {
-              handleNameInputChange(e);
-            }}
-          />
-        </div>
-        <div>
-          number
-          <input
-            value={newNumber}
-            onChange={(e) => handleNumberInputChange(e)}
-          />
-        </div>
-        <div>
-          <button type="submit" onClick={(e) => handleAddPerson(e)}>
-            add
-          </button>
-        </div>
-      </form>
+      <PhoneBookForm
+        onChangeName={handleNameInputChange}
+        onChangeNumber={handleNumberInputChange}
+        addOnClick={handleAddPerson}
+        valueName={newName}
+        valueNumber={newNumber}
+      />
       <h2>Numbers</h2>
       <section
         style={{
@@ -94,11 +81,7 @@ const App = () => {
           gap: "4px",
         }}
       >
-        {filteredData.map((person) => (
-          <span key={person.name}>
-            {person.name}: <strong>{person.number}</strong>
-          </span>
-        ))}
+        <NumbersContainer data={filteredData} />
       </section>
     </div>
   );
