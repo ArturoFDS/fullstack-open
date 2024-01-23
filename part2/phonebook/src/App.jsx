@@ -26,6 +26,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [messageType, setMessageType] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(fetchPersons, [persons]);
 
@@ -77,8 +78,14 @@ const App = () => {
         number: newNumber,
       };
       addPersonAndNumber(newPerson)
-        .then(() => setMessageType("success"))
-        .catch(() => setMessageType("error"))
+        .then(() => {
+          setMessageType("success");
+          setMessage(`${newPerson.name} has been created`);
+        })
+        .catch(() => {
+          setMessageType("error");
+          setMessage(`We were unable to create ${newPerson}`);
+        })
         .finally(() => setTimeout(() => setMessageType(null), 5000));
       setNewName("");
       setNewNumber("");
@@ -87,7 +94,17 @@ const App = () => {
 
   const handleDeletePerson = (id, name) => {
     const confirm = window.confirm(`Are you sure you want to delete ${name}?`);
-    if (confirm) deletePerson(id).then(() => setMessageType("success")).catch(() => setMessageType('error')).finally(() => setTimeout(() => setMessageType(null), 5000));
+    if (confirm)
+      deletePerson(id)
+        .then(() => {
+          setMessageType("success");
+          setMessage(`${name} successfully deleted`);
+        })
+        .catch(() => {
+          setMessageType("error");
+          setMessage(`It was not possible to delete ${name} `);
+        })
+        .finally(() => setTimeout(() => setMessageType(null), 5000));
   };
 
   const filteredData = searchValue
@@ -104,7 +121,7 @@ const App = () => {
       </section>
       <h2>Phonebook</h2>
       <section>
-        <MessageNotification message={"Deleted"} type={messageType} />
+        <MessageNotification message={message} type={messageType} />
       </section>
       <PhoneBookForm
         onChangeName={handleNameInputChange}

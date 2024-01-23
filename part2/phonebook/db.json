@@ -1,16 +1,6 @@
 {
   "persons": [
     {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": "2"
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": "3"
-    },
-    {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": "4"
@@ -49,6 +39,21 @@
       "id": 5947,
       "name": "Calvin Klein",
       "number": "2412334"
+    },
+    {
+      "id": 1898,
+      "name": "Dan Abramov",
+      "number": "123141236341"
+    },
+    {
+      "id": 3249,
+      "name": "Justin Bieber",
+      "number": "1257673612"
+    },
+    {
+      "id": 4787,
+      "name": "Snoop Dog",
+      "number": "126655341873"
     }
   ]
 }
