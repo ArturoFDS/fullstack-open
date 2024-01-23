@@ -2,19 +2,32 @@ import { useState } from "react";
 import Filter from "./components/Filter";
 import PhoneBookForm from "./components/Form";
 import NumbersContainer from "./components/Numbers";
+import { useEffect } from "react";
+import {
+  addPersonAndNumber,
+  deletePerson,
+  getAllPersons,
+  updatePerson,
+} from "./api/fetching";
+import MessageNotification from "./utils/MessageNotification";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "809-234-5234" },
-    { name: "John Doe", number: "123-456-7890" },
-    { name: "Jane Smith", number: "987-654-3210" },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const fetchPersons = () => {
+    try {
+      const data = getAllPersons();
+      data.then((response) => setPersons(response));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [persons, setPersons] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newName, setNewName] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [messageType, setMessageType] = useState("");
+
+  useEffect(fetchPersons, [persons]);
 
   const handleNameInputChange = (event) => {
     event.preventDefault();
@@ -33,24 +46,48 @@ const App = () => {
 
   const handleAddPerson = (event) => {
     event.preventDefault();
-    persons.map((person) => {
-      if (person.name === newName) {
-        window.alert(`${newName} already exists on the persons useState`);
-        console.log(person.name);
-      } else if (person.number === newNumber) {
-        window.alert(`${newNumber} already exists on the numbers useState`);
+    const existingPerson = persons.find((person) => person.name === newName);
+    if (existingPerson) {
+      window.alert(`${newName} already exists`);
+      const confirmed = window.confirm(
+        `${existingPerson.name} already exists, want to update the number linked to that person?`
+      );
+      if (confirmed) {
+        const data = {
+          ...existingPerson,
+          number: newNumber,
+        };
+        updatePerson(data, existingPerson.id)
+          .then((response) => console.log(response))
+          .finally(() => null);
       }
-    });
-    if (newName === "") {
+    } else if (persons.some((person) => person.number === newNumber)) {
+      window.alert(`${newNumber} already exists`);
+      throw new Error("Number already exists");
+    } else if (newName === "") {
       window.alert("Need to add a name");
       return null;
     } else if (newNumber === "") {
       window.alert("Need to add a number");
       return null;
+    } else {
+      const newPerson = {
+        id: Math.floor(Math.random() * 10000),
+        name: newName,
+        number: newNumber,
+      };
+      addPersonAndNumber(newPerson)
+        .then(() => setMessageType("success"))
+        .catch(() => setMessageType("error"))
+        .finally(() => setTimeout(() => setMessageType(null), 5000));
+      setNewName("");
+      setNewNumber("");
     }
-    setPersons(persons.concat({ name: newName, number: newNumber }));
-    setNewName("");
-    setNewNumber("");
+  };
+
+  const handleDeletePerson = (id, name) => {
+    const confirm = window.confirm(`Are you sure you want to delete ${name}?`);
+    if (confirm) deletePerson(id).then(() => setMessageType("success")).catch(() => setMessageType('error')).finally(() => setTimeout(() => setMessageType(null), 5000));
   };
 
   const filteredData = searchValue
@@ -66,6 +103,9 @@ const App = () => {
         <Filter onChangeHandler={handleSearchInputChange} />
       </section>
       <h2>Phonebook</h2>
+      <section>
+        <MessageNotification message={"Deleted"} type={messageType} />
+      </section>
       <PhoneBookForm
         onChangeName={handleNameInputChange}
         onChangeNumber={handleNumberInputChange}
@@ -81,7 +121,10 @@ const App = () => {
           gap: "4px",
         }}
       >
-        <NumbersContainer data={filteredData} />
+        <NumbersContainer
+          onClickDeleteFunction={handleDeletePerson}
+          data={filteredData}
+        />
       </section>
     </div>
   );
