@@ -28,7 +28,7 @@ const App = () => {
   const [messageType, setMessageType] = useState("");
   const [message, setMessage] = useState("");
 
-  useEffect(fetchPersons, [persons]);
+  useEffect(fetchPersons, []);
 
   const handleNameInputChange = (event) => {
     event.preventDefault();
@@ -96,7 +96,8 @@ const App = () => {
     const confirm = window.confirm(`Are you sure you want to delete ${name}?`);
     if (confirm)
       deletePerson(id)
-        .then(() => {
+        .then((res) => {
+          setPersons(res.data.persons);
           setMessageType("success");
           setMessage(`${name} successfully deleted`);
         })
