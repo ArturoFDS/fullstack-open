@@ -49,4 +49,42 @@ router.get("/persons/:id", (req, res) => {
     });
   }
 });
+
+router.post("/persons/create", (req, res) => {
+  try {
+    const newPerson = {
+      id: Math.floor(Math.random() * 51283),
+      name: "Julius Black",
+      number: "842-123-5213",
+    };
+    const newUser = phonebook.concat(newPerson);
+
+    res.status(201).json({
+      message: "User succesfully created",
+      phonebook: newUser,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: error,
+    });
+  }
+});
+
+router.delete("/persons/delete/:id", (req, res) => {
+  try {
+    const deletePerson = phonebook.filter(
+      (person) => person.id !== parseInt(req.params.id)
+    );
+    console.log(deletePerson);
+    res.status(200).json({
+      message: "User successfully deleted",
+      persons: deletePerson,
+    });
+  } catch (error) {
+    res.status(204).json({
+      error: error,
+      message: "The user does not exists, so it cannot be deleted",
+    });
+  }
+});
 export default router;
