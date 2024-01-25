@@ -45,7 +45,7 @@ router.get("/persons/:id", (req, res) => {
     res.status(200).send(person);
   } catch (error) {
     res.status(404).json({
-      error: error,
+      error: error.message,
     });
   }
 });
@@ -54,9 +54,26 @@ router.post("/persons/create", (req, res) => {
   try {
     const newPerson = {
       id: Math.floor(Math.random() * 51283),
-      name: "Julius Black",
-      number: "842-123-5213",
+      name: "Mary Poppeye",
+      number: "040-123456",
     };
+
+    const findMatchesByName = phonebook.filter(
+      (person) => person.name === newPerson.name
+    );
+    const findMatchesByNumber = phonebook.filter(
+      (person) => person.number === newPerson.number
+    );
+    if (findMatchesByName.length) {
+      throw Error(
+        `A person with the same name already exists: ${newPerson.name}`
+      );
+    }
+    if (findMatchesByNumber.length) {;
+      throw Error(
+        `A person with the same number already exists: ${newPerson.number}`
+      );
+    }
     const newUser = phonebook.concat(newPerson);
 
     res.status(201).json({
@@ -65,7 +82,7 @@ router.post("/persons/create", (req, res) => {
     });
   } catch (error) {
     res.status(400).json({
-      error: error,
+      error: error.message,
     });
   }
 });
