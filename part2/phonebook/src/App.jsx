@@ -73,6 +73,9 @@ const App = () => {
     } else if (newNumber === "") {
       window.alert("Need to add a number");
       return null;
+    } else if (newName.length < 3) {
+      window.alert("Name must have at least three leters (3)");
+      return null;
     } else {
       const newPerson = {
         id: Math.floor(Math.random() * 10000),

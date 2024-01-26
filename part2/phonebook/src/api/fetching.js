@@ -18,14 +18,14 @@ export function addPersonAndNumber(data) {
 export function deletePerson(id) {
   const response = Axios.delete(
     `https://fso-phonebook-backend-m4ty.onrender.com/api/persons/delete/${id}`
-  ).then((response => response));
+  ).then((response) => response);
   console.log(response);
   return response;
 }
 
 export function updatePerson(data, id) {
   const response = Axios.put(
-    `https://fso-phonebook-backend-m4ty.onrender.com/api/persons/${id}`,
+    `https://fso-phonebook-backend-m4ty.onrender.com/api/persons/update/${id}`,
     data
   );
   return response;
