@@ -102,12 +102,13 @@ const App = () => {
 
   const handleDeletePerson = (id, name) => {
     const confirm = window.confirm(`Are you sure you want to delete ${name}?`);
-    if (confirm)
+    if (confirm) {
+      setSearchValue("");
       deletePerson(id)
-        .then((res) => {
-          setPersons(res.data.persons);
+        .then(() => {
           setMessageType("success");
           setMessage(`${name} successfully deleted`);
+          fetchPersons();
         })
         .catch(() => {
           setMessageType("error");
@@ -116,9 +117,9 @@ const App = () => {
         .finally(() =>
           setTimeout(() => {
             setMessageType(null);
-            fetchPersons();
           }, 5000)
         );
+    }
   };
 
   const filteredData = searchValue
