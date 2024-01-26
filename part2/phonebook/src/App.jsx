@@ -12,23 +12,25 @@ import {
 import MessageNotification from "./utils/MessageNotification";
 
 const App = () => {
-  const fetchPersons = () => {
-    try {
-      const data = getAllPersons();
-      data.then((response) => setPersons(response));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const [persons, setPersons] = useState("");
+  const [persons, setPersons] = useState([]);
   const [newNumber, setNewNumber] = useState("");
   const [newName, setNewName] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [messageType, setMessageType] = useState("");
   const [message, setMessage] = useState("");
+  const fetchPersons = () => {
+    try {
+      const data = getAllPersons();
+      data.then((response) => {
+        setPersons(response);
+        console.log(response);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  useEffect(fetchPersons, []);
+  useEffect(() => fetchPersons(), []);
 
   const handleNameInputChange = (event) => {
     event.preventDefault();
@@ -60,7 +62,7 @@ const App = () => {
         };
         updatePerson(data, existingPerson.id)
           .then((response) => console.log(response))
-          .finally(() => null);
+          .finally(() => setTimeout(() => fetchPersons(), 5000));
       }
     } else if (persons.some((person) => person.number === newNumber)) {
       window.alert(`${newNumber} already exists`);
@@ -79,6 +81,7 @@ const App = () => {
       };
       addPersonAndNumber(newPerson)
         .then(() => {
+          console.log(newPerson);
           setMessageType("success");
           setMessage(`${newPerson.name} has been created`);
         })
@@ -86,7 +89,12 @@ const App = () => {
           setMessageType("error");
           setMessage(`We were unable to create ${newPerson}`);
         })
-        .finally(() => setTimeout(() => setMessageType(null), 5000));
+        .finally(() =>
+          setTimeout(() => {
+            setMessageType(null);
+            fetchPersons();
+          }, 5000)
+        );
       setNewName("");
       setNewNumber("");
     }
@@ -105,7 +113,12 @@ const App = () => {
           setMessageType("error");
           setMessage(`It was not possible to delete ${name} `);
         })
-        .finally(() => setTimeout(() => setMessageType(null), 5000));
+        .finally(() =>
+          setTimeout(() => {
+            setMessageType(null);
+            fetchPersons();
+          }, 5000)
+        );
   };
 
   const filteredData = searchValue

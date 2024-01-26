@@ -3,7 +3,7 @@ import Axios from "axios";
 export function getAllPersons() {
   const response = Axios.get(
     "https://fso-phonebook-backend-m4ty.onrender.com/api/persons"
-  ).then((response) => response.data);
+  ).then((response) => response.data.data);
   return response;
 }
 
@@ -18,7 +18,7 @@ export function addPersonAndNumber(data) {
 export function deletePerson(id) {
   const response = Axios.delete(
     `https://fso-phonebook-backend-m4ty.onrender.com/api/persons/delete/${id}`
-  );
+  ).then((response => response));
   console.log(response);
   return response;
 }

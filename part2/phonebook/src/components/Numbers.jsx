@@ -5,8 +5,8 @@ const NumbersContainer = ({ data, onClickDeleteFunction }) => {
     <>
       {data.map((person) => (
         <span key={person.name}>
-          {person.name}: <strong>{person.number}</strong>
-          <DeleteButton onClickFunction={() => onClickDeleteFunction(person.id, person.name)} />
+          {person.name}: <strong>{person.number} </strong>
+          <DeleteButton onClickFunction={() => onClickDeleteFunction(person._id, person.name)} />
         </span>
       ))}
     </>
