@@ -27,4 +27,35 @@ router.post("/blogs/create", (req, res) => {
     .catch((error) => res.status(400).json({ errorMessage: error.message }));
 });
 
+router.put("/blogs/update/:id", (req, res) => {
+  const { id } = req.params;
+  const { likes } = req.body;
+  Blog.updateOne(
+    { _id: id },
+    {
+      likes,
+    }
+  )
+    .then((blog) => {
+      console.log(blog);
+      res.status(202).json({
+        message: "Blog successfully updated",
+        data: blog,
+      });
+    })
+    .catch((error) => res.status(400).json({ errorMessage: error.message }));
+});
+
+router.delete("/blogs/delete/:id", (req, res) => {
+  Blog.deleteOne({ _id: req.params.id })
+    .then((blog) => {
+      console.log(blog);
+      res.status(200).json({
+        message: "Blog successfully deleted",
+        data: blog,
+      });
+    })
+    .catch((error) => res.status(400).json({ errorMessage: error.message }));
+});
+
 export default router;
