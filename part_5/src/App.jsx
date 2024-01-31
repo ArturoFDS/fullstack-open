@@ -1,14 +1,15 @@
-import Blogs from "./components/Blogs";
 import { useState } from "react";
 import { LoginUser, getAllBlogs } from "./services/fetching";
 import { useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorageHook";
+import BlogsContainer from "./components/Blogs";
+import LoginForm from "./components/LoginForm";
 const App = () => {
   const localStorage = new useLocalStorage();
   const [blogs, setBlogs] = useState();
   const [userData, setUserData] = useState({
-    username: "Frodo",
-    password: "Frodo",
+    username: "",
+    password: "",
     isLogged: false,
   });
 
@@ -17,7 +18,7 @@ const App = () => {
     setBlogs(response);
   };
 
-  const handleInputOnChange = (event) => {
+  const handleOnChange = (event) => {
     setUserData({
       ...userData,
       [event.target.name]: event.target.value,
@@ -35,8 +36,22 @@ const App = () => {
     }
   };
 
+  const handleLogout = (event) => {
+    event.preventDefault();
+    setUserData({ isLogged: false });
+    localStorage.removeLocalStorage("isLogged");
+  };
+
   useEffect(() => {
     fetchBlogs();
+    const setIsLogged = localStorage.getLocalStorage("isLogged");
+    setIsLogged
+      ? setUserData({
+          isLogged: JSON.stringify(setIsLogged),
+        })
+      : setUserData({
+          isLogged: userData.isLogged,
+        });
   }, []);
 
   return (
@@ -44,8 +59,21 @@ const App = () => {
       <header>
         <h1>Blogs Frontend</h1>
       </header>
-      <button onClick={(e) => handleOnSubmit(e)}>Submit Data</button>
-      {blogs && <Blogs blogs={blogs} />}
+      <main>
+        {!userData.isLogged && (
+          <LoginForm
+            FOnSubmit={handleOnSubmit}
+            FOnChange={handleOnChange}
+            value={userData}
+          />
+        )}
+        {blogs && userData.isLogged && <BlogsContainer blogs={blogs} />}
+      </main>
+      <footer>
+        {userData.isLogged && (
+          <button onClick={(e) => handleLogout(e)}>Logout</button>
+        )}
+      </footer>
     </div>
   );
 };

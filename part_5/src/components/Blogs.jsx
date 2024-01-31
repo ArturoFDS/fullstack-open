@@ -1,4 +1,4 @@
-const Blogs = ({ blogs }) => {
+const BlogsContainer = ({ blogs }) => {
   return (
     <div>
       <main>
@@ -18,4 +18,4 @@ const Blogs = ({ blogs }) => {
   );
 };
 
-export default Blogs;
+export default BlogsContainer;
