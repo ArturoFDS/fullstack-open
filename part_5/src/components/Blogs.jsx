@@ -1,14 +1,19 @@
 const Blogs = ({ blogs }) => {
-  console.log(blogs);
   return (
     <div>
-      {blogs.map((blog) => (
-        <div key={blog._id}>
-          <header>
-            <h3>{blog.title}</h3>
-          </header>
-        </div>
-      ))}
+      <main>
+        <h2>Rendered Blogs</h2>
+        {blogs?.map((blog) => (
+          <section key={blog._id}>
+            <div>
+              <span>
+                <strong> Title: </strong>
+                <i> {blog.title}</i>
+              </span>
+            </div>
+          </section>
+        ))}
+      </main>
     </div>
   );
 };

@@ -1,43 +1,51 @@
-import { useEffect, useState } from "react";
 import Blogs from "./components/Blogs";
-import { LoginUser, getBlogs } from "./services/fetching";
-import LoginForm from "./components/LoginForm";
+import { useState } from "react";
+import { LoginUser, getAllBlogs } from "./services/fetching";
+import { useEffect } from "react";
+import useLocalStorage from "../hooks/useLocalStorageHook";
 const App = () => {
+  const localStorage = new useLocalStorage();
+  const [blogs, setBlogs] = useState();
   const [userData, setUserData] = useState({
-    username: "",
-    password: "",
+    username: "Frodo",
+    password: "Frodo",
     isLogged: false,
   });
-  const [blogs, setBlogs] = useState();
-  useEffect(() => {
-    getBlogs().then((res) => setBlogs(res));
-  }, []);
-  const handleOnChange = (e) => {
-    e.preventDefault();
-    setUserData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    console.log(userData);
+
+  const fetchBlogs = async () => {
+    const response = await getAllBlogs();
+    setBlogs(response);
   };
 
-  const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    const response = await LoginUser(userData.username, userData.password);
-    console.log(response)
+  const handleInputOnChange = (event) => {
+    setUserData({
+      ...userData,
+      [event.target.name]: event.target.value,
+    });
   };
+
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
+    const response = await LoginUser(userData);
+    if (response.ok) {
+      setUserData({
+        isLogged: true,
+      });
+      localStorage.setLocalStorage("isLogged", (userData.isLogged = true));
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
   return (
     <div>
       <header>
-        <h1>Blogs App</h1>
+        <h1>Blogs Frontend</h1>
       </header>
-
-      <main>
-        {!userData.isLogged && (
-          <LoginForm userData={userData} onChangeFunction={handleOnChange} onSubmitFunction={handleOnSubmit} />
-        )}
-        {blogs && userData.isLogged && <Blogs blogs={blogs.data} />}
-      </main>
+      <button onClick={(e) => handleOnSubmit(e)}>Submit Data</button>
+      {blogs && <Blogs blogs={blogs} />}
     </div>
   );
 };
