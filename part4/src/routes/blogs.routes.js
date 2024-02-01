@@ -18,6 +18,12 @@ router.get("/blogs", (req, res) => {
 
 router.post("/blogs/create", verifyLoggedIn, (req, res) => {
   const { title, url, likes } = req.body;
+  if (title === "" || url === "" || likes === "") {
+    res.status(400).json({
+      errorMessage: "One of the fields is empty, please fill all of them",
+    });
+    return;
+  }
   Blog.create({ title, author: req.userId, url, likes })
     .then((blog) => {
       console.log(blog);
