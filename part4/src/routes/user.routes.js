@@ -35,16 +35,25 @@ router.post("/users/register", (req, res) => {
 });
 
 router.post("/users/login", (req, res) => {
+  console.log(req.body);
   const { username, password } = req.body;
   User.findOne({ username }).then((user) => {
-    const comparePassword = bcrypt.compareSync(password, user.password);
-    if (comparePassword) {
-      console.log(user.id);
-      const token = jwt.sign(user.id, process.env.JWT_SECRET);
-      res.cookie("IToken", token);
-      res.status(200).json({
-        message: "Successfully logged in",
-      });
+    try {
+      const comparePassword = bcrypt.compareSync(password, user.password);
+      if (comparePassword) {
+        console.log(user.id);
+        const token = jwt.sign(user.id, process.env.JWT_SECRET);
+        res.cookie("IToken", token);
+        res.status(200).json({
+          message: "Successfully logged in",
+        });
+      } else {
+        res.status(401).json({
+          message: "Wrong credentials!",
+        });
+      }
+    } catch (error) {
+      res.status(200);
     }
   });
 });
