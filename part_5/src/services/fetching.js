@@ -61,3 +61,26 @@ export async function createBlog(data) {
     console.error(error)
   }
 }
+
+export async function updateLikes(id, data) {
+  try {
+    const serverResponse = fetch(
+      `http://localhost:3000/api/blogs/update/${id}`,
+      {
+        body: JSON.stringify(data),
+        method: 'PUT',
+        credentials: 'include',
+      }
+    )
+
+    if (serverResponse.ok) {
+      return serverResponse
+    }
+
+    if (!serverResponse.ok) {
+      throw new Error(serverResponse.status)
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}

@@ -1,5 +1,10 @@
 import { useState } from 'react'
-import { LoginUser, createBlog, getAllBlogs } from './services/fetching'
+import {
+  LoginUser,
+  createBlog,
+  getAllBlogs,
+  updateLikes
+} from './services/fetching'
 import { useEffect } from 'react'
 import useLocalStorage from '../hooks/useLocalStorageHook'
 import BlogsContainer from './components/Blogs'
@@ -96,6 +101,15 @@ const App = () => {
     }
   }
 
+  const handleOnClickLikesUpdate = async (event, id, likes) => {
+    event.preventDefault()
+    const response = await updateLikes(id, likes)
+    console.log(response)
+    if (response?.ok) {
+      console.log(response)
+    }
+  }
+
   useEffect(() => {
     fetchBlogs()
     const setIsLogged = localStorage.getLocalStorage('isLogged')
@@ -133,8 +147,11 @@ const App = () => {
         </section>
         {blogs && userData.isLogged && userData.username && (
           <div>
-            <CreateBlogForm onCreateBlogF={handleOnClickBlogCreate} />
-            <BlogsContainer blogs={blogs} />
+            <CreateBlogForm onCreateBlogF={handleOnClickBlogCreate} on />
+            <BlogsContainer
+              blogs={blogs}
+              onLikesUpdateF={handleOnClickLikesUpdate}
+            />
           </div>
         )}
       </main>
