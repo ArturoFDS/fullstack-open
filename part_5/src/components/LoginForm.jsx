@@ -11,6 +11,7 @@ const LoginForm = ({ FOnSubmit, FOnChange }) => {
             type="text"
             name="username"
             placeholder="John Doe"
+            autoComplete="off"
             onChange={FOnChange}
           />
         </section>
