@@ -18,6 +18,7 @@ const CreateBlogForm = ({ onCreateBlogF }) => {
       [event.target.name]: event.target.value
     })
   }
+
   return (
     <div>
       {!isShow && (
@@ -42,6 +43,7 @@ const CreateBlogForm = ({ onCreateBlogF }) => {
               <input
                 type="text"
                 name="title"
+                id="title" // Added id for association
                 autoComplete="off"
                 onChange={(e) => handleOnChange(e)}
                 value={newBlog.title}
@@ -53,6 +55,7 @@ const CreateBlogForm = ({ onCreateBlogF }) => {
               <input
                 type="text"
                 name="url"
+                id="url" // Added id for association
                 autoComplete="off"
                 onChange={(e) => handleOnChange(e)}
                 value={newBlog.url}
@@ -64,6 +67,7 @@ const CreateBlogForm = ({ onCreateBlogF }) => {
               <input
                 type="number"
                 name="likes"
+                id="likes" // Added id for association
                 autoComplete="off"
                 onChange={(e) => handleOnChange(e)}
                 value={newBlog.likes}

@@ -1,16 +1,19 @@
-import { useState } from 'react'
+/* eslint-disable new-cap */
+import { useState, useEffect } from 'react'
 import {
   LoginUser,
   createBlog,
+  deleteBlog,
   getAllBlogs,
   updateLikes
 } from './services/fetching'
-import { useEffect } from 'react'
+
 import useLocalStorage from '../hooks/useLocalStorageHook'
 import BlogsContainer from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlog'
 import NotificationModel from '../utils/Notifications'
+import Counter from './components/Counter'
 const App = () => {
   const localStorage = new useLocalStorage()
   const [blogs, setBlogs] = useState()
@@ -26,6 +29,8 @@ const App = () => {
 
   const fetchBlogs = async () => {
     const response = await getAllBlogs()
+    const hello = response.sort((b, a) => b.likes - a.likes)
+    console.log(hello)
     setBlogs(response)
   }
 
@@ -63,6 +68,13 @@ const App = () => {
         })
       }, 5000)
     }
+  }
+
+  const handleOnDeleteBlogs = async (event, id) => {
+    event.preventDefault()
+    const response = await deleteBlog(id)
+    console.log(response)
+    await fetchBlogs()
   }
 
   const handleLogout = (event) => {
@@ -116,8 +128,8 @@ const App = () => {
     setIsLogged
       ? setUserData(JSON.parse(setIsLogged))
       : setUserData({
-          isLogged: userData.isLogged
-        })
+        isLogged: userData.isLogged
+      })
   }, [])
 
   return (
@@ -150,8 +162,10 @@ const App = () => {
             <CreateBlogForm onCreateBlogF={handleOnClickBlogCreate} on />
             <BlogsContainer
               blogs={blogs}
+              onDeleteBlogF={handleOnDeleteBlogs}
               onLikesUpdateF={handleOnClickLikesUpdate}
             />
+            <Counter initialCount={0} />
           </div>
         )}
       </main>
