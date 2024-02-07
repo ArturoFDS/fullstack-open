@@ -3,14 +3,16 @@ import { Blog } from "../../schemas/blogSchema.js";
 import verifyLoggedIn from "../../middlewares/jsonToken.js";
 const router = Router();
 
-router.get("/blogs", (req, res) => {
+router.get("/blogs", verifyLoggedIn, (req, res) => {
+  const userID = req.userId;
+  console.log(userID);
   Blog.find()
     .populate("author")
     .then((blogs) => {
       console.log(blogs);
       res.status(200).json({
         message: "Data successfully retrieved",
-        data: blogs,
+        data: { blogs, userID },
       });
     })
     .catch((error) => res.status(400).json({ errorMessage: error.message }));

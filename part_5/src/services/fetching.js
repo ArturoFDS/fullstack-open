@@ -1,6 +1,8 @@
 export async function getAllBlogs () {
   try {
-    const serverResponse = await fetch('http://localhost:3000/api/blogs')
+    const serverResponse = await fetch('http://localhost:3000/api/blogs', {
+      credentials: 'include'
+    })
     if (serverResponse.ok) {
       const response = await serverResponse.json()
       return response.data
@@ -98,7 +100,7 @@ export async function deleteBlog (id) {
       }
     )
     if (serverResponse.ok) {
-      console.log(serverResponse)
+      return serverResponse
     }
     if (!serverResponse.ok) {
       throw new Error(serverResponse.status)

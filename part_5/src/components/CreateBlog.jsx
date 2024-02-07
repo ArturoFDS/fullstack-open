@@ -73,7 +73,7 @@ const CreateBlogForm = ({ onCreateBlogF }) => {
                 value={newBlog.likes}
               />
             </section>
-            <button type="submit">Create Blog!</button>{' '}
+            <button type="submit">Create Blog!</button>
             <button onClick={(e) => handleOnClick(e)}>Cancel</button>
           </form>
         </div>

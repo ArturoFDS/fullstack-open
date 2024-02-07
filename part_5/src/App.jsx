@@ -13,10 +13,12 @@ import BlogsContainer from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlog'
 import NotificationModel from '../utils/Notifications'
-import Counter from './components/Counter'
 const App = () => {
   const localStorage = new useLocalStorage()
-  const [blogs, setBlogs] = useState()
+  const [blogs, setBlogs] = useState({
+    blogs: '',
+    authID: ''
+  })
   const [userData, setUserData] = useState({
     username: '',
     password: '',
@@ -29,9 +31,11 @@ const App = () => {
 
   const fetchBlogs = async () => {
     const response = await getAllBlogs()
-    const hello = response.sort((b, a) => b.likes - a.likes)
-    console.log(hello)
-    setBlogs(response)
+    const moreLikestoLessLikes = response.blogs.sort((b, a) => b.likes - a.likes)
+    setBlogs({
+      blogs: moreLikestoLessLikes,
+      authID: response.userID
+    })
   }
 
   const handleOnChange = (event) => {
@@ -72,8 +76,7 @@ const App = () => {
 
   const handleOnDeleteBlogs = async (event, id) => {
     event.preventDefault()
-    const response = await deleteBlog(id)
-    console.log(response)
+    await deleteBlog(id)
     await fetchBlogs()
   }
 
@@ -157,15 +160,15 @@ const App = () => {
             />
           )}
         </section>
-        {blogs && userData.isLogged && userData.username && (
+        {blogs.blogs && blogs.authID && userData.isLogged && userData.username && (
           <div>
             <CreateBlogForm onCreateBlogF={handleOnClickBlogCreate} on />
             <BlogsContainer
-              blogs={blogs}
+              blogs={blogs.blogs}
+              authID={blogs.authID}
               onDeleteBlogF={handleOnDeleteBlogs}
               onLikesUpdateF={handleOnClickLikesUpdate}
             />
-            <Counter initialCount={0} />
           </div>
         )}
       </main>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF }) => {
+const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF, authID }) => {
   PropTypes.checkPropTypes(
     BlogsContainer.propTypes,
     { blogs, onLikesUpdateF, onDeleteBlogF },
@@ -13,8 +13,6 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF }) => {
 
   const handleOnShowDetails = (index) => {
     setShowDetails(showDetails === index ? -1 : index)
-    console.log(showDetails)
-    console.log(index)
   }
   return (
     <div>
@@ -33,7 +31,10 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF }) => {
                 <span>
                   <strong> Title: </strong>
                   <i> {blog.title}</i>
-                  <button onClick={() => handleOnShowDetails(blogIndex)}>
+                  <button
+                    onClick={() => handleOnShowDetails(blogIndex)}
+                    id="show-details"
+                  >
                     {!showDetails ? 'Close Details' : 'Show Details'}
                   </button>
                 </span>
@@ -41,10 +42,10 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF }) => {
               {showDetails === blogIndex && (
                 <section>
                   <ul>
-                    <li>
+                    <li className="url">
                       Url of the blog: <strong>{blog.url}</strong>
                     </li>
-                    <li>
+                    <li className="likes">
                       Likes of the blog:
                       <strong>{numberOfLikes || blog.likes}</strong>
                       <button
@@ -67,9 +68,11 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF }) => {
                       <strong>{blog.author?.username}</strong>
                     </li>
                   </ul>
-                  <button onClick={(e) => onDeleteBlogF(e, blog._id)}>
-                    Delete blog
-                  </button>
+                  {authID === blog.author?._id && (
+                    <button onClick={(e) => onDeleteBlogF(e, blog._id)}>
+                      Delete blog
+                    </button>
+                  )}
                 </section>
               )}
             </section>

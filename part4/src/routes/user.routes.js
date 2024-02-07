@@ -46,6 +46,7 @@ router.post("/users/login", (req, res) => {
         res.cookie("IToken", token);
         res.status(200).json({
           message: "Successfully logged in",
+          body: user
         });
       } else {
         res.status(401).json({
