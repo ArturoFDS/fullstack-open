@@ -22,7 +22,7 @@ const CreateBlogForm = ({ onCreateBlogF }) => {
   return (
     <div>
       {!isShow && (
-        <button onClick={(e) => handleOnClick(e)}>Create new blog</button>
+        <button id='create-new-blog'onClick={(e) => handleOnClick(e)}>Create new blog</button>
       )}
 
       {isShow && (
@@ -73,8 +73,8 @@ const CreateBlogForm = ({ onCreateBlogF }) => {
                 value={newBlog.likes}
               />
             </section>
-            <button type="submit">Create Blog!</button>
-            <button onClick={(e) => handleOnClick(e)}>Cancel</button>
+            <button id='create-blog' type="submit">Create Blog!</button>
+            <button id='cancel-blog' onClick={(e) => handleOnClick(e)}>Cancel</button>
           </form>
         </div>
       )}

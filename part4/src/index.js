@@ -7,6 +7,7 @@ import blogsRoutes from "./routes/blogs.routes.js";
 import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
 import cookieParser from "cookie-parser";
+import testingRoutes from "./routes/testingRoutes.routes.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use(morgan("dev"));
 
 app.use("/api", blogsRoutes);
 app.use("/api", userRoutes);
+app.use('/api', testingRoutes)
 app.listen(process.env.SERVER_PORT, () => {
   console.log(
     `The server is successfully running on http://localhost:${process.env.SERVER_PORT} 🙌🚀`

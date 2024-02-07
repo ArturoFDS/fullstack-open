@@ -5,7 +5,6 @@ const router = Router();
 
 router.get("/blogs", verifyLoggedIn, (req, res) => {
   const userID = req.userId;
-  console.log(userID);
   Blog.find()
     .populate("author")
     .then((blogs) => {
