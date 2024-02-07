@@ -1,7 +1,8 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
+    'cypress/globals': true
   },
   extends: ['standard', 'plugin:react/recommended'],
   overrides: [
@@ -19,7 +20,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react'],
+  plugins: ['react', 'cypress'],
   rules: {
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',

@@ -58,6 +58,7 @@ const App = () => {
         isLogged: true
       }
       localStorage.setLocalStorage('isLogged', dataForLocalStorage)
+      await fetchBlogs()
     }
     if (!response?.ok) {
       console.log(response)
@@ -126,13 +127,18 @@ const App = () => {
   }
 
   useEffect(() => {
-    fetchBlogs()
-    const setIsLogged = localStorage.getLocalStorage('isLogged')
-    setIsLogged
-      ? setUserData(JSON.parse(setIsLogged))
-      : setUserData({
-        isLogged: userData.isLogged
-      })
+    const confirmIsLogged = async () => {
+      const setIsLogged = localStorage.getLocalStorage('isLogged')
+      if (setIsLogged) {
+        setUserData(JSON.parse(setIsLogged))
+        await fetchBlogs()
+      } else {
+        setUserData({
+          isLogged: userData.isLogged
+        })
+      }
+    }
+    confirmIsLogged()
   }, [])
 
   return (
