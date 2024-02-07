@@ -49,6 +49,7 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF, authID }) => {
                       Likes of the blog:
                       <strong>{numberOfLikes || blog.likes}</strong>
                       <button
+                      id='give-like'
                         onClick={(e) => {
                           setNumberOfLikes(
                             numberOfLikes ? numberOfLikes + 1 : blog.likes + 1
@@ -69,7 +70,7 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF, authID }) => {
                     </li>
                   </ul>
                   {authID === blog.author?._id && (
-                    <button onClick={(e) => onDeleteBlogF(e, blog._id)}>
+                    <button id='delete-blog' onClick={(e) => onDeleteBlogF(e, blog._id)}>
                       Delete blog
                     </button>
                   )}

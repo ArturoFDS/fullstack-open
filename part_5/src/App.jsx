@@ -31,7 +31,7 @@ const App = () => {
 
   const fetchBlogs = async () => {
     const response = await getAllBlogs()
-    const moreLikestoLessLikes = response.blogs.sort((b, a) => b.likes - a.likes)
+    const moreLikestoLessLikes = response.blogs.sort((b, a) => a.likes - b.likes)
     setBlogs({
       blogs: moreLikestoLessLikes,
       authID: response.userID
