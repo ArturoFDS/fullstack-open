@@ -19,6 +19,7 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF, authID }) => {
       <main>
         <h2>Rendered Blogs</h2>
         <div
+          id="blogs-container"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -26,7 +27,7 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF, authID }) => {
           }}
         >
           {blogs?.map((blog, blogIndex) => (
-            <section key={blog._id}>
+            <section id='blog-container' key={blog._id}>
               <div>
                 <span>
                   <strong> Title: </strong>
@@ -49,7 +50,7 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF, authID }) => {
                       Likes of the blog:
                       <strong>{numberOfLikes || blog.likes}</strong>
                       <button
-                      id='give-like'
+                        id="give-like"
                         onClick={(e) => {
                           setNumberOfLikes(
                             numberOfLikes ? numberOfLikes + 1 : blog.likes + 1
@@ -70,7 +71,10 @@ const BlogsContainer = ({ blogs, onLikesUpdateF, onDeleteBlogF, authID }) => {
                     </li>
                   </ul>
                   {authID === blog.author?._id && (
-                    <button id='delete-blog' onClick={(e) => onDeleteBlogF(e, blog._id)}>
+                    <button
+                      id="delete-blog"
+                      onClick={(e) => onDeleteBlogF(e, blog._id)}
+                    >
                       Delete blog
                     </button>
                   )}
