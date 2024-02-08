@@ -1,29 +1,23 @@
-import store from '../store/counterReducer'
-import Notes from './components/Notes'
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const App = () => {
+  const dispatch = useDispatch();
+  const votes = useSelector((state) => state);
   return (
     <div>
-      <section>
-        <h1>{store.getState()}</h1>
-      </section>
-      <section>
-        <button onClick={() => store.dispatch({ type: 'INCREMENT' })}>
-          Increment by one
-        </button>
-        <button onClick={() => store.dispatch({ type: 'DECREMENT' })}>
-          Decrement by one
-        </button>
-        <button onClick={() => store.dispatch({ type: 'ZERO' })}>
-          Reset to Zero
-        </button>
-      </section>
-
-      <section>
-        <Notes />
-      </section>
+      <button onClick={() => dispatch({ type: "GOOD" })}>good</button>
+      <button onClick={() => dispatch({ type: "OK" })}>ok</button>
+      <button onClick={() => dispatch({ type: "BAD" })}>bad</button>
+      <button onClick={() => dispatch({ type: "RESET STATS" })}>
+        reset stats
+      </button>
+      <div>ok {votes.ok}</div>
+      <div>good {votes.good}</div>
+      <div>bad {votes.bad}</div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

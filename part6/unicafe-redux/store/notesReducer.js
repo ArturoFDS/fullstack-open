@@ -1,19 +1,25 @@
 /* eslint-disable no-return-assign */
-import { createStore } from 'redux'
+import { createStore } from "redux";
 export const noteReducer = (state = [], action) => {
   switch (action.type) {
-    case 'NEW_NOTE':
-      return state.concat(action.payload)
-    case 'CHANGE_IMPORTANCE':
-      return state.map((value) => value.id === action.payload.id ? value.important = false : state)
+    case "NEW_NOTE":
+      return [...state, action.payload];
+    case "CHANGE_IMPORTANCE":
+      const id = action.payload.id;
+      const noteToChange = state.find((n) => n.id === id);
+      const changedNote = {
+        ...noteToChange,
+        important: !noteToChange.important,
+      };
+      return state.map((note) => (note.id !== id ? note : changedNote));
     default:
-      return state
+      return state;
   }
-}
+};
 
-const store = createStore(noteReducer)
+const store = createStore(noteReducer);
 store.subscribe(() => {
-  const storeNow = store.getState()
-  console.log(storeNow)
-})
-export default store
+  const storeNow = store.getState();
+  console.log(storeNow);
+});
+export default store;
