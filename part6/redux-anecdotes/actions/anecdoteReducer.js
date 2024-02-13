@@ -2,16 +2,16 @@ const getId = () => (100000 * Math.random()).toFixed(0);
 
 export function voteAnecdote(id) {
   return {
-    type: "VOTING",
+    type: "anecdotes/changeAnecdote",
     payload: {
       id: id,
     },
   };
 }
 
-export function createNewAnecdote(anecdote) {
+export function createNewAnecdoteAction(anecdote) {
   return {
-    type: "NEW_ANECDOTE",
+    type: "anecdotes/createNewAnecdote",
     payload: {
       content: anecdote,
       id: getId(),

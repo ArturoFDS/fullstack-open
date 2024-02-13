@@ -1,4 +1,5 @@
 const AnecdotesList = ({anecdotes, voteF}) => {
+  console.log(anecdotes)
   return (
     <div><h2>Anecdotes</h2>
     {anecdotes?.map((anecdote) => (

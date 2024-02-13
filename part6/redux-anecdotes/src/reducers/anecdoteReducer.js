@@ -1,3 +1,4 @@
+import { createSlice } from "@reduxjs/toolkit";
 /* eslint-disable no-case-declarations */
 const anecdotesAtStart = [
   "If it hurts, do it more often",
@@ -20,9 +21,11 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map((anecdote) => asObject(anecdote));
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "VOTING":
+const anecdoteSlice = createSlice({
+  name: "anecdotes",
+  initialState,
+  reducers: {
+    changeAnecdote(state, action) {
       const anecdoteToChange = state.find((n) => n.id === action.payload.id);
       const changedAnecdote = {
         ...anecdoteToChange,
@@ -31,12 +34,13 @@ const reducer = (state = initialState, action) => {
       return state.map((anecdote) =>
         anecdote.id !== action.payload.id ? anecdote : changedAnecdote
       );
-    case "NEW_ANECDOTE":
+    },
+    createNewAnecdote(state, action) {
       const newAnecdote = action.payload;
       return [...state, newAnecdote];
-    default:
-      return state
-  }
-};
+    },
+  },
+});
 
-export default reducer;
+export const { changeAnecdote, createNewAnecdote } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer
